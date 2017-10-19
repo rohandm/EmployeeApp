@@ -129,4 +129,13 @@ public class Employee implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
+    
+    /**
+     * toString implementation
+     * @return 
+     */
+    @Override
+    public String toString(){
+        return this.id+" "+this.firstName+" "+this.middleInitial+" "+this.lastName;
+    }
 }

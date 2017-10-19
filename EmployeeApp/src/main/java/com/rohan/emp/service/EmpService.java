@@ -6,6 +6,7 @@
 package com.rohan.emp.service;
 
 import com.rohan.emp.dataobjects.Employee;
+import com.rohan.emp.exception.EmpAppException;
 import com.rohan.emp.repository.DataInitRepository;
 import com.rohan.emp.repository.EmpRepository;
 import java.util.List;
@@ -52,39 +53,56 @@ public class EmpService {
      * @return 
      */
     public Employee findEmployeeById(long empId) {
-            return empRepository.findFirstById(empId);
+            return empRepository.findFirstByIdAndStatus(empId, STATUS_ACTIVE);
     }
 
     /**
      * Add new employee
      * @param emp 
+     * @return  
+     * @throws com.rohan.emp.exception.EmpAppException 
      */
-    public void addEmployee(Employee emp) {
+    public Employee addEmployee(Employee emp) throws EmpAppException {
         emp.setStatus(STATUS_ACTIVE);
-        empRepository.save(emp);
+        emp = empRepository.save(emp);
+        if(emp.getId() == 0){
+            throw new EmpAppException("Unable to add employee "+emp);
+        }
+        return emp;
     }
     
     /**
      * Update employee details
      * @param emp 
+     * @return  
+     * @throws com.rohan.emp.exception.EmpAppException 
      */
-    public void updateEmployee(Employee emp){
-        Employee emp1 = empRepository.findFirstById(emp.getId());
-        if(emp1 != null){
-            empRepository.save(emp);
+    public Employee updateEmployee(Employee emp) throws EmpAppException{
+        Employee emp1 = empRepository.findFirstByIdAndStatus(emp.getId(), STATUS_ACTIVE);
+        if(emp1 == null){
+            throw new EmpAppException("No active employee found "+emp1);
         }
+        emp1.setFirstName(emp.getFirstName());
+        emp1.setMiddleInitial(emp.getMiddleInitial());
+        emp1.setLastName(emp.getLastName());
+        emp1.setDateOfBirth(emp.getDateOfBirth());
+        emp1.setDateOfEmployment(emp.getDateOfEmployment());
+        return empRepository.save(emp1);
     }
     
     /**
      * Delete employee
      * @param empId 
+     * @return  
+     * @throws com.rohan.emp.exception.EmpAppException 
      */
-    public void deleteEmployee(long empId){
-        Employee emp1 = empRepository.findFirstById(empId);
-        if(emp1 != null){
-            emp1.setStatus(STATUS_INACTIVE);
-            empRepository.save(emp1);
+    public Employee deleteEmployee(long empId) throws EmpAppException{
+        Employee emp = empRepository.findFirstByIdAndStatus(empId, STATUS_ACTIVE);
+        if(emp == null){
+            throw new EmpAppException("No active employee found "+emp);
         }
+        emp.setStatus(STATUS_INACTIVE);
+        return empRepository.save(emp);
     }
     
     /**

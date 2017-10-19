@@ -6,6 +6,7 @@
 package com.rohan.emp.controller;
 
 import com.rohan.emp.dataobjects.Employee;
+import com.rohan.emp.exception.EmpAppException;
 import com.rohan.emp.service.EmpService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,11 +66,12 @@ public class EmpController {
      *
      * @param emp
      * @return
+     * @throws com.rohan.emp.exception.EmpAppException
      */
     @RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void addEmployee(@RequestBody Employee emp) {
-        empService.addEmployee(emp);
+    public Employee addEmployee(@RequestBody Employee emp) throws EmpAppException {
+        return empService.addEmployee(emp);
     }
 
     /**
@@ -77,11 +79,12 @@ public class EmpController {
      *
      * @param emp
      * @return
+     * @throws com.rohan.emp.exception.EmpAppException
      */
     @RequestMapping(method = RequestMethod.PUT, headers = "Accept=application/json")
     @PreAuthorize("hasRole('ROLE_SUPER_USER')")
-    public void updateEmployee(@RequestBody Employee emp) {
-        empService.updateEmployee(emp);
+    public Employee updateEmployee(@RequestBody Employee emp) throws EmpAppException {
+        return empService.updateEmployee(emp);
     }
 
     /**
@@ -89,11 +92,12 @@ public class EmpController {
      *
      * @param empId
      * @return
+     * @throws com.rohan.emp.exception.EmpAppException
      */
     @RequestMapping(value = "{empId}", method = RequestMethod.DELETE, headers = "Accept=application/json")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void deleteEmployee(@PathVariable("empId") long empId) {
-        empService.deleteEmployee(empId);
+    public Employee deleteEmployee(@PathVariable("empId") long empId) throws EmpAppException {
+        return empService.deleteEmployee(empId);
     }
 
     /**
