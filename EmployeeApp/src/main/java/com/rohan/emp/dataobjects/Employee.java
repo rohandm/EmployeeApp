@@ -5,6 +5,7 @@
  */
 package com.rohan.emp.dataobjects;
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,13 +17,18 @@ public class Employee implements Serializable {
 
 	@Id
         @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "emp_gen")
-        @SequenceGenerator(name="emp_gen", sequenceName = "emp_seq")
+        @SequenceGenerator(name="emp_gen", sequenceName = "emp_seq") //sequence generator for generating unique id
 	private long id;
 
+        @Column(name="FIRST_NM")
 	private String firstName;
+        @Column(name="MIDDLE_NM")
         private String middleInitial;
+        @Column(name="LAST_NM")
 	private String lastName;
+        @Column(name="BIRTH_DT")
         private String dateOfBirth;
+        @Column(name="EMP_START_DT")
         private String dateOfEmployment;
         private String status;
 

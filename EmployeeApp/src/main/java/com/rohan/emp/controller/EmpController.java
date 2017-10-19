@@ -13,77 +13,95 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
+ * Controller class for employee CRUD operations
  *
  * @author rohan_000
  */
 @RestController
 @RequestMapping("/employees")
 public class EmpController {
-    
-    	@Autowired
-	protected EmpService empService;
 
-	protected Logger logger = LoggerFactory.getLogger(EmpController.class);
+    //Employee service
+    private EmpService empService;
 
-	/*public EmpController(EmpService empService) {
-		this.empService = empService;
-	}*/
-    	/**
-	 * Return all users
-	 * 
-	 * @return
-	 */
-	@RequestMapping(method = RequestMethod.GET, headers = "Accept=application/json")
-	public List<Employee> findAllActiveEmployees() {
-		return empService.findAllActiveEmployees();
-	}
+    @Autowired
+    protected void setEmpService(EmpService empSvc) {
+        this.empService = empSvc;
+    }
 
-	/**
-	 * Return user associated with specific user name
-	 * 
-	 * @param userName
-	 * @return
-	 */
-	@RequestMapping(value = "{empId}", method = RequestMethod.GET, headers = "Accept=application/json")
-	public Employee findEmployeeById(@PathVariable("empId") long empId) {
-		return empService.findEmployeeById(empId);
-	}
-        
-	/**
-	 * Return user associated with specific user name
-	 * 
-	 * @param emp
-	 * @return
-	 */
-	@RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
-	public void addEmployee(@RequestBody Employee emp) {
-		empService.addEmployee(emp);
-	}
-        
-	/**
-	 * Return user associated with specific user name
-	 * 
-	 * @param emp
-	 * @return
-	 */
-	@RequestMapping(method = RequestMethod.PUT, headers = "Accept=application/json")
-	public void updateEmployee(@RequestBody Employee emp) {
-		empService.updateEmployee(emp);
-	}
-        
-	/**
-	 * Return user associated with specific user name
-	 * 
-	 * @param emp
-	 * @return
-	 */
-	@RequestMapping(method = RequestMethod.DELETE, headers = "Accept=application/json")
-	public void deleteEmployee(@RequestBody Employee emp) {
-		empService.deleteEmployee(emp);
-	}
+    protected static Logger logger = LoggerFactory.getLogger(EmpController.class);
+
+    /*
+     * Return all active employees, available to all users with role USER and higher
+     *
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, headers = "Accept=application/json")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public List<Employee> findAllActiveEmployees() {
+        return empService.findAllActiveEmployees();
+    }
+
+    /**
+     * Return employee with specified id, available to all users with ROLE USER and higher
+     *
+     * @param empId
+     * @return
+     */
+    @RequestMapping(value = "{empId}", method = RequestMethod.GET, headers = "Accept=application/json")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public Employee findEmployeeById(@PathVariable("empId") long empId) {
+        return empService.findEmployeeById(empId);
+    }
+
+    /**
+     * Add new employee, available to users with ROLE ADMIN
+     *
+     * @param emp
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void addEmployee(@RequestBody Employee emp) {
+        empService.addEmployee(emp);
+    }
+
+    /**
+     * Update employee details, available to users with ROLE SUPER_USER and higher
+     *
+     * @param emp
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.PUT, headers = "Accept=application/json")
+    @PreAuthorize("hasRole('ROLE_SUPER_USER')")
+    public void updateEmployee(@RequestBody Employee emp) {
+        empService.updateEmployee(emp);
+    }
+
+    /**
+     * Deactivate employee, available to users with ROLE ADMIN
+     *
+     * @param empId
+     * @return
+     */
+    @RequestMapping(value = "{empId}", method = RequestMethod.DELETE, headers = "Accept=application/json")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void deleteEmployee(@PathVariable("empId") long empId) {
+        empService.deleteEmployee(empId);
+    }
+
+    /**
+     * Load initial data, available to users with ROLE ADMIN
+     */
+    @RequestMapping(path = "/loadData", method = RequestMethod.GET)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void loadData() {
+        empService.loadData();
+    }
 }
