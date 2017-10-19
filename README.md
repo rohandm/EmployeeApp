@@ -23,8 +23,8 @@ This is a demo microservice which exposes basic employee management apis to fron
   * H2 embedded database
   * Maven
 ## <a name="execute-app"></a>Running the service
-  * Download the binary from https://github.com/rohandm/EmployeeApp/releases/tag/0.01 and run the service from command prompt using below command
-  * `java -jar target/EmployeeApp.jar` command.
+  * Download the jar EmployeeApp.jar from https://github.com/rohandm/EmployeeApp/releases/tag/0.01 and run the service from command prompt using below command
+  * `java -jar EmployeeApp.jar` command.
   
 ## <a name="load-data"></a>Loading data
   * Copy the required data which the service needs to be intialized with to ./data/init.csv and invoke loadData api using below command
