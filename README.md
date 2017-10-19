@@ -13,6 +13,7 @@ This is a demo microservice which exposes basic employee management apis to fron
   * [Delete Employee](#delete-emp)
   * [Get Employee by Id](#get-emp)
   * [Get all Employees](#get-all-emp)
+* [Authentication & Authorizatino](#auth)
 
 ## <a name="tech"></a>Technologies used
   * Spring Boot
@@ -35,7 +36,7 @@ This is a demo microservice which exposes basic employee management apis to fron
   
   ### <a name="update-emp"></a>Update Employee
   * Use postman tool or run below curl command
-  * `curl -i -X PUT -H "Content-type:application/json" -d '{"firstName":"firstName1", "lastName":"lastName1", "dateOfBirth":"12-05-1085", "dateOfEmployment":"12-05-1085"}' localhost:8080/employees -u admin:password`
+  * `curl -i -X PUT -H "Content-type:application/json" -d '{"firstName":"firstName1", "lastName":"lastName1", "dateOfBirth":"12-05-1085", "dateOfEmployment":"12-05-1085"}' localhost:8080/employees -u super_user:password`
   
   ### <a name="delete-emp"></a>Delete Employee
   * Use postman tool or run below curl command
@@ -49,5 +50,16 @@ This is a demo microservice which exposes basic employee management apis to fron
   * Use postman tool or run below curl command
   * `curl localhost:8080/employees -u user:password`
   
+ ## <a name="auth"></a>Authentication & Authorization
+  * This service uses basic http authentication for all api requests. Some apis are restricted to users with priveleged roles like ADMIN or SUPER_USER. Below is the authorization required for each api:
+  1) Add Employee, Delete Employee, Load initial data - ADMIN role or higher.
+  2) Update Employee - SUPER_USER role or higher.
+  3) Get Employee(s) - USER role or higher.
+  * ADMIN > SUPER_USER > USER
+  
+  * Authorized users:
+   * user: user, password: password 
+   * user: super_user, password: password 
+   * user: admin, password: password 
 
 
