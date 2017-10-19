@@ -13,7 +13,7 @@ This is a demo microservice which exposes basic employee management apis to fron
   * [Delete Employee](#delete-emp)
   * [Get Employee by Id](#get-emp)
   * [Get all Employees](#get-all-emp)
-* [Authentication & Authorizatino](#auth)
+* [Authentication & Authorization](#auth)
 
 ## <a name="tech"></a>Technologies used
   * Spring Boot
