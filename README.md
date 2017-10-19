@@ -36,7 +36,7 @@ This is a demo microservice which exposes basic employee management apis to fron
   
   ### <a name="update-emp"></a>Update Employee
   * Use postman tool or run below curl command
-  * `curl -i -X PUT -H "Content-type:application/json" -d '{"firstName":"firstName1", "lastName":"lastName1", "dateOfBirth":"12-05-1085", "dateOfEmployment":"12-05-1085"}' localhost:8080/employees -u super_user:password`
+  * `curl -i -X PUT -H "Content-type:application/json" -d '{"id":1, "firstName":"firstName1", "lastName":"lastName1", "dateOfBirth":"12-05-1085", "dateOfEmployment":"12-05-1085"}' localhost:8080/employees -u super_user:password`
   
   ### <a name="delete-emp"></a>Delete Employee
   * Use postman tool or run below curl command
