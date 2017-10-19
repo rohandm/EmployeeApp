@@ -28,7 +28,7 @@ This is a demo microservice which exposes basic employee management apis to fron
   
 ## <a name="load-data"></a>Loading data
   * Copy the required data which the service needs to be intialized with to ./data/init.csv and invoke loadData api using below command
-  ``
+  * `curl localhost:8080/employees/loadData -u admin:password`
 ## <a name="invoke-app"></a>Invoking APIs
   ### <a name="add-emp"></a>Add Employee
   * Use postman tool or run below curl command
