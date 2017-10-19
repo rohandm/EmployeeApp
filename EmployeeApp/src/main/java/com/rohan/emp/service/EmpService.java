@@ -9,24 +9,45 @@ import com.rohan.emp.dataobjects.Employee;
 import com.rohan.emp.repository.EmpRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author rohan_000
  */
+@Service
 public class EmpService {
     @Autowired
     EmpRepository empRepository;
     
-    public List<Employee> getActiveEmployees() {
-            return empRepository.findByStatus();
+    public static final String STATUS_ACTIVE = "A";
+    public static final String STATUS_INACTIVE = "I";
+    
+    public List<Employee> findAllActiveEmployees() {
+            return empRepository.findByStatus(STATUS_ACTIVE);
     }
     
-    public Employee findById(String empId) {
+    public Employee findEmployeeById(long empId) {
             return empRepository.findFirstById(empId);
     }
 
-    public void add(Employee emp) {
+    public void addEmployee(Employee emp) {
+        emp.setStatus(STATUS_ACTIVE);
         empRepository.save(emp);
+    }
+    
+    public void updateEmployee(Employee emp){
+        Employee emp1 = empRepository.findFirstById(emp.getId());
+        if(emp1 != null){
+            empRepository.save(emp);
+        }
+    }
+    
+    public void deleteEmployee(Employee emp){
+        Employee emp1 = empRepository.findFirstById(emp.getId());
+        if(emp1 != null){
+            emp1.setStatus(STATUS_INACTIVE);
+            empRepository.save(emp1);
+        }
     }
 }

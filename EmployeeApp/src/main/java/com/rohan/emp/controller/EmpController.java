@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author rohan_000
  */
 @RestController
-@RequestMapping("/employee")
+@RequestMapping("/employees")
 public class EmpController {
     
     	@Autowired
@@ -30,17 +30,17 @@ public class EmpController {
 
 	protected Logger logger = LoggerFactory.getLogger(EmpController.class);
 
-	public EmpController(EmpService empService) {
+	/*public EmpController(EmpService empService) {
 		this.empService = empService;
-	}
+	}*/
     	/**
 	 * Return all users
 	 * 
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.GET, headers = "Accept=application/json")
-	public List<Employee> getActiveEmployees() {
-		return empService.getActiveEmployees();
+	public List<Employee> findAllActiveEmployees() {
+		return empService.findAllActiveEmployees();
 	}
 
 	/**
@@ -50,18 +50,40 @@ public class EmpController {
 	 * @return
 	 */
 	@RequestMapping(value = "{empId}", method = RequestMethod.GET, headers = "Accept=application/json")
-	public Employee findById(@PathVariable("empId") String empId) {
-		return empService.findById(empId);
+	public Employee findEmployeeById(@PathVariable("empId") long empId) {
+		return empService.findEmployeeById(empId);
 	}
         
 	/**
 	 * Return user associated with specific user name
 	 * 
-	 * @param userName
+	 * @param emp
 	 * @return
 	 */
-	@RequestMapping(value = "/add", method = RequestMethod.POST, headers = "Accept=application/json")
-	public void findById(@RequestBody Employee emp) {
-		empService.add(emp);
+	@RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
+	public void addEmployee(@RequestBody Employee emp) {
+		empService.addEmployee(emp);
+	}
+        
+	/**
+	 * Return user associated with specific user name
+	 * 
+	 * @param emp
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.PUT, headers = "Accept=application/json")
+	public void updateEmployee(@RequestBody Employee emp) {
+		empService.updateEmployee(emp);
+	}
+        
+	/**
+	 * Return user associated with specific user name
+	 * 
+	 * @param emp
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.DELETE, headers = "Accept=application/json")
+	public void deleteEmployee(@RequestBody Employee emp) {
+		empService.deleteEmployee(emp);
 	}
 }
